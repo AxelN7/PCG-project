@@ -482,13 +482,13 @@ public class WFCgenerator {
 
         if (success) {
             System.out.println("WFC succeeded!");
-            write2DArrayToCSV(worldArray, "../temp/output.csv");
+            write2DArrayToCSV(worldArray, "../Assets/output.csv");
         } else {
             System.out.println("WFC failed after " + maxAttempts + " attempts.");
         }
 
         // exporting worldArray to csv
-        write2DArrayToCSV(worldArray, "../temp/output.csv");
+        write2DArrayToCSV(worldArray, "../Assets/output.csv");
 
         sc.close();
     }
