@@ -324,7 +324,7 @@ public class WFCgenerator {
         for (int y = 0; y < array.length; y++) {
             for (int i = 0; i < array[0].length; i++) {
                 for (int j = 0; j < array[0][0].length; j++) {
-                    array[y][i][j] = value;
+                    array[y][i][j] = -1;
                 }
             }
         }
@@ -468,7 +468,7 @@ public class WFCgenerator {
         // actuall wfc - 10 retries by default
         boolean success = false;
         int attempts = 0;
-        int maxAttempts = 1000;
+        int maxAttempts = 100;
         int trySeed = seed;
 
         while (!success && attempts < maxAttempts) {
