@@ -42,14 +42,11 @@ public class WFCgenerator {
         RESTRICTIONS[0][0][1] = 1;
         RESTRICTIONS[0][0][2] = 5;
         RESTRICTIONS[0][0][3] = 9;
-        RESTRICTIONS[0][0][4] = 11;
-        RESTRICTIONS[0][0][5] = 12;
         // down
         RESTRICTIONS[1][0][0] = 0;
         RESTRICTIONS[1][0][1] = 1;
         RESTRICTIONS[1][0][2] = 2;
         RESTRICTIONS[1][0][3] = 3;
-        RESTRICTIONS[1][0][4] = 11;
         // left
         RESTRICTIONS[2][0][0] = 0;
         RESTRICTIONS[2][0][1] = 3;
@@ -82,15 +79,17 @@ public class WFCgenerator {
 
         // 2 - ALL WALL missing down
         // right
-        RESTRICTIONS[0][2][0] = 3;
-        RESTRICTIONS[0][2][1] = 12;
+        RESTRICTIONS[0][2][0] = 2;
+        RESTRICTIONS[0][2][1] = 3;
+        RESTRICTIONS[0][2][2] = 12;
         // down
-        RESTRICTIONS[1][2][0] = 4;
+        //RESTRICTIONS[1][2][0] = 4;
         RESTRICTIONS[1][2][1] = 6;
-        RESTRICTIONS[1][2][2] = 10;
+        //RESTRICTIONS[1][2][2] = 10;
         // left
         RESTRICTIONS[2][2][0] = 1;
         RESTRICTIONS[2][2][1] = 2;
+        RESTRICTIONS[2][2][2] = 8;
         // up
         RESTRICTIONS[3][2][0] = 0;
         RESTRICTIONS[3][2][1] = 9;
@@ -103,38 +102,46 @@ public class WFCgenerator {
         RESTRICTIONS[0][3][1] = 1;
         RESTRICTIONS[0][3][2] = 5;
         RESTRICTIONS[0][3][3] = 9;
-        RESTRICTIONS[0][3][4] = 11;
-        RESTRICTIONS[0][3][5] = 12;
         // down
         RESTRICTIONS[1][3][0] = 7;
+        RESTRICTIONS[1][3][1] = 8;
+        RESTRICTIONS[1][3][2] = 11;
         // left
         RESTRICTIONS[2][3][0] = 1;
         RESTRICTIONS[2][3][1] = 2;
+        RESTRICTIONS[2][3][2] = 8;
         // up
-        RESTRICTIONS[3][3][0] = 1;
-        RESTRICTIONS[3][3][1] = 2;
+        RESTRICTIONS[3][3][0] = 0;
+        RESTRICTIONS[3][3][1] = 9;
+        RESTRICTIONS[3][3][2] = 10;
+        RESTRICTIONS[3][3][3] = 11;
 
         // 4 - left and up no wall
         // right
-        RESTRICTIONS[0][4][0] = 13;
+        RESTRICTIONS[0][4][0] = 10;
+        RESTRICTIONS[0][4][1] = 11;
+        RESTRICTIONS[0][4][2] = 13;
         // down
         RESTRICTIONS[1][4][0] = 7;
         RESTRICTIONS[1][4][1] = 8;
+        RESTRICTIONS[1][4][2] = 11;
         // left
-        RESTRICTIONS[2][4][0] = 6;
-        RESTRICTIONS[2][4][1] = 8;
-        RESTRICTIONS[2][4][2] = 12;
+        //RESTRICTIONS[2][4][0] = 5;
+        RESTRICTIONS[2][4][1] = 6;
+        //RESTRICTIONS[2][4][2] = 12;
+        //RESTRICTIONS[2][4][3] = 13;
         // up
-        RESTRICTIONS[3][4][0] = 2;
+        //RESTRICTIONS[3][4][0] = 2;
         RESTRICTIONS[3][4][1] = 6;
-        RESTRICTIONS[3][4][2] = 8;
-        RESTRICTIONS[3][4][3] = 12;
+        //RESTRICTIONS[3][4][2] = 8;
+        //RESTRICTIONS[3][4][3] = 12;
 
         // 5 - right no wall
         // right
-        RESTRICTIONS[0][5][0] = 6;
-        RESTRICTIONS[0][5][1] = 7;
-        RESTRICTIONS[0][5][2] = 8;
+        //RESTRICTIONS[0][5][0] = 4;
+        RESTRICTIONS[0][5][1] = 6;
+        //RESTRICTIONS[0][5][2] = 7;
+        //RESTRICTIONS[0][5][3] = 8;
         // down
         RESTRICTIONS[1][5][0] = 5;
         RESTRICTIONS[1][5][1] = 9;
@@ -154,11 +161,12 @@ public class WFCgenerator {
         RESTRICTIONS[0][6][0] = 4;
         RESTRICTIONS[0][6][1] = 6;
         RESTRICTIONS[0][6][2] = 7;
+        RESTRICTIONS[0][6][3] = 8;
         // down
         RESTRICTIONS[1][6][0] = 4;
         RESTRICTIONS[1][6][1] = 6;
         RESTRICTIONS[1][6][2] = 10;
-        RESTRICTIONS[1][6][3] = 12;
+        RESTRICTIONS[1][6][3] = 13;
         // left
         RESTRICTIONS[2][6][0] = 5;
         RESTRICTIONS[2][6][1] = 6;
@@ -176,34 +184,35 @@ public class WFCgenerator {
         RESTRICTIONS[0][7][1] = 1;
         RESTRICTIONS[0][7][2] = 5;
         RESTRICTIONS[0][7][3] = 9;
-        RESTRICTIONS[0][7][4] = 11;
-        RESTRICTIONS[0][7][5] = 12;
         // down
-        RESTRICTIONS[1][7][0] = 0;
-        RESTRICTIONS[1][7][1] = 11;
+        RESTRICTIONS[1][7][0] = 7;
+        RESTRICTIONS[1][7][1] = 8;
+        RESTRICTIONS[1][7][2] = 11;
         // left
-        RESTRICTIONS[2][7][0] = 5;
+        //RESTRICTIONS[2][7][0] = 5;
         RESTRICTIONS[2][7][1] = 6;
-        RESTRICTIONS[2][7][2] = 12;
-        RESTRICTIONS[2][7][3] = 13;
+        //RESTRICTIONS[2][7][2] = 12;
+        //RESTRICTIONS[2][7][3] = 13;
         // up
         RESTRICTIONS[3][7][0] = 3;
-        RESTRICTIONS[3][7][1] = 7;
+        RESTRICTIONS[3][7][1] = 4;
+        RESTRICTIONS[3][7][2] = 7;
 
-        // 8 - left empty wall
+        // 8 - left and bottom empty wall
         // right
-        RESTRICTIONS[0][8][0] = 3;
-        RESTRICTIONS[0][8][1] = 12;
+        RESTRICTIONS[0][8][0] = 2;
+        RESTRICTIONS[0][8][1] = 3;
+        RESTRICTIONS[0][8][2] = 12;
         // down
-        RESTRICTIONS[1][8][0] = 4;
+        //RESTRICTIONS[1][8][0] = 4;
         RESTRICTIONS[1][8][1] = 6;
-        RESTRICTIONS[1][8][2] = 10;
-        RESTRICTIONS[1][8][2] = 13;
+        //RESTRICTIONS[1][8][2] = 10;
+        //RESTRICTIONS[1][8][3] = 13;
         // left
-        RESTRICTIONS[2][8][0] = 5;
+        //RESTRICTIONS[2][8][0] = 5;
         RESTRICTIONS[2][8][1] = 6;
-        RESTRICTIONS[2][8][2] = 12;
-        RESTRICTIONS[2][8][3] = 13;
+        //RESTRICTIONS[2][8][2] = 12;
+        //RESTRICTIONS[2][8][3] = 13;
         // up
         RESTRICTIONS[3][8][0] = 3;
         RESTRICTIONS[3][8][1] = 4;
@@ -219,14 +228,15 @@ public class WFCgenerator {
         RESTRICTIONS[1][9][1] = 1;
         RESTRICTIONS[1][9][2] = 2;
         RESTRICTIONS[1][9][3] = 3;
-        RESTRICTIONS[1][9][4] = 11;
         // left
         RESTRICTIONS[2][9][0] = 0;
         RESTRICTIONS[2][9][1] = 3;
         RESTRICTIONS[2][9][2] = 7;
         RESTRICTIONS[2][9][3] = 11;
         // up
-        RESTRICTIONS[3][9][0] = 5;
+        RESTRICTIONS[3][9][0] = 1;
+        RESTRICTIONS[3][9][1] = 5;
+        RESTRICTIONS[3][9][2] = 13;
 
         // 10 - top missing wall
         // right
@@ -238,80 +248,75 @@ public class WFCgenerator {
         RESTRICTIONS[1][10][1] = 1;
         RESTRICTIONS[1][10][2] = 2;
         RESTRICTIONS[1][10][3] = 3;
-        RESTRICTIONS[1][10][4] = 11;
         // left
         RESTRICTIONS[2][10][0] = 4;
         RESTRICTIONS[2][10][1] = 9;
         RESTRICTIONS[2][10][2] = 10;
         // up
-        RESTRICTIONS[3][10][1] = 2;
+        //RESTRICTIONS[3][10][1] = 2;
         RESTRICTIONS[3][10][2] = 6;
-        RESTRICTIONS[3][10][3] = 8;
-        RESTRICTIONS[3][10][4] = 12;
+        //RESTRICTIONS[3][10][3] = 8;
+        //RESTRICTIONS[3][10][4] = 12;
 
-        // 11 - full wall with texture
+        // 11 - top left slightly missing wall
         // right
         RESTRICTIONS[0][11][0] = 0;
         RESTRICTIONS[0][11][1] = 1;
         RESTRICTIONS[0][11][2] = 5;
         RESTRICTIONS[0][11][3] = 9;
-        RESTRICTIONS[0][11][4] = 11;
-        RESTRICTIONS[0][11][5] = 12;
         // down
         RESTRICTIONS[1][11][0] = 0;
         RESTRICTIONS[1][11][1] = 1;
         RESTRICTIONS[1][11][2] = 2;
         RESTRICTIONS[1][11][3] = 3;
-        RESTRICTIONS[1][11][4] = 11;
         // left
-        RESTRICTIONS[2][11][0] = 0;
-        RESTRICTIONS[2][11][1] = 3;
-        RESTRICTIONS[2][11][2] = 7;
-        RESTRICTIONS[2][11][3] = 11;
+        RESTRICTIONS[2][11][0] = 4;
+        RESTRICTIONS[2][11][1] = 9;
+        RESTRICTIONS[2][11][1] = 10;
         // up
-        RESTRICTIONS[3][11][0] = 0;
-        RESTRICTIONS[3][11][1] = 9;
-        RESTRICTIONS[3][11][2] = 10;
-        RESTRICTIONS[3][11][3] = 11;
+        RESTRICTIONS[3][11][0] = 3;
+        RESTRICTIONS[3][11][1] = 4;
+        RESTRICTIONS[3][11][2] = 7;
 
-        // 11 - missing right and bottom
+        // 12 - missing right and bottom
         // right
-        RESTRICTIONS[0][11][0] = 4;
-        RESTRICTIONS[0][11][1] = 6;
-        RESTRICTIONS[0][11][2] = 7;
-        RESTRICTIONS[0][11][3] = 8;
-        // down
-        RESTRICTIONS[1][11][0] = 4;
-        RESTRICTIONS[1][11][1] = 6;
-        RESTRICTIONS[1][11][2] = 10;
-        RESTRICTIONS[1][11][3] = 13;
-        // left
-        RESTRICTIONS[2][11][0] = 2;
-        RESTRICTIONS[2][11][1] = 4;
-        RESTRICTIONS[2][11][2] = 8;
-        // up
-        RESTRICTIONS[3][11][0] = 1;
-        RESTRICTIONS[3][11][1] = 5;
-        RESTRICTIONS[3][11][2] = 13;
-
-        // 12 - missing right and top
-        // right
-        RESTRICTIONS[0][12][0] = 4;
+        //RESTRICTIONS[0][12][0] = 4;
         RESTRICTIONS[0][12][1] = 6;
-        RESTRICTIONS[0][12][2] = 7;
-        RESTRICTIONS[0][12][3] = 8;
+        //RESTRICTIONS[0][12][2] = 7;
+        //RESTRICTIONS[0][12][3] = 8;
         // down
-        RESTRICTIONS[1][12][0] = 5;
-        RESTRICTIONS[1][12][1] = 9;
-        RESTRICTIONS[1][12][2] = 12;
+        //RESTRICTIONS[1][12][0] = 4;
+        RESTRICTIONS[1][12][1] = 6;
+        //RESTRICTIONS[1][12][2] = 10;
+        //RESTRICTIONS[1][12][3] = 13;
         // left
-        RESTRICTIONS[2][12][0] = 4;
-        RESTRICTIONS[2][12][1] = 9;
-        RESTRICTIONS[2][12][2] = 10;
+        RESTRICTIONS[2][12][0] = 1;
+        RESTRICTIONS[2][12][1] = 2;
+        RESTRICTIONS[2][12][2] = 8;
         // up
-        RESTRICTIONS[3][12][0] = 2;
-        RESTRICTIONS[3][12][1] = 6;
-        RESTRICTIONS[3][12][2] = 8;
+        RESTRICTIONS[3][12][0] = 1;
+        RESTRICTIONS[3][12][1] = 5;
+        RESTRICTIONS[3][12][2] = 13;
+
+        // 13 - missing right and top
+        // right
+        //RESTRICTIONS[0][13][0] = 4;
+        RESTRICTIONS[0][13][1] = 6;
+        //RESTRICTIONS[0][13][2] = 7;
+        //RESTRICTIONS[0][13][3] = 8;
+        // down
+        RESTRICTIONS[1][13][0] = 5;
+        RESTRICTIONS[1][13][1] = 9;
+        RESTRICTIONS[1][13][2] = 12;
+        // left
+        RESTRICTIONS[2][13][0] = 4;
+        RESTRICTIONS[2][13][1] = 9;
+        RESTRICTIONS[2][13][2] = 10;
+        // up
+        //RESTRICTIONS[3][13][0] = 2;
+        RESTRICTIONS[3][13][1] = 6;
+        //RESTRICTIONS[3][13][2] = 8;
+        //RESTRICTIONS[3][13][3] = 12;
 
     }
 
