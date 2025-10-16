@@ -8,6 +8,8 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private Vector2 movementDirection;
 
+    [SerializeField] MapGenerator map;
+
     // Start is called before the first frame update
     void Start()
     {
