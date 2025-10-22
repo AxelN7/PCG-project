@@ -83,9 +83,9 @@ public class WFCgenerator {
         RESTRICTIONS[0][2][1] = 3;
         RESTRICTIONS[0][2][2] = 12;
         // down
-        //RESTRICTIONS[1][2][0] = 4;
+        // RESTRICTIONS[1][2][0] = 4;
         RESTRICTIONS[1][2][1] = 6;
-        //RESTRICTIONS[1][2][2] = 10;
+        // RESTRICTIONS[1][2][2] = 10;
         // left
         RESTRICTIONS[2][2][0] = 1;
         RESTRICTIONS[2][2][1] = 2;
@@ -126,22 +126,22 @@ public class WFCgenerator {
         RESTRICTIONS[1][4][1] = 8;
         RESTRICTIONS[1][4][2] = 11;
         // left
-        //RESTRICTIONS[2][4][0] = 5;
+        // RESTRICTIONS[2][4][0] = 5;
         RESTRICTIONS[2][4][1] = 6;
-        //RESTRICTIONS[2][4][2] = 12;
-        //RESTRICTIONS[2][4][3] = 13;
+        // RESTRICTIONS[2][4][2] = 12;
+        // RESTRICTIONS[2][4][3] = 13;
         // up
-        //RESTRICTIONS[3][4][0] = 2;
+        // RESTRICTIONS[3][4][0] = 2;
         RESTRICTIONS[3][4][1] = 6;
-        //RESTRICTIONS[3][4][2] = 8;
-        //RESTRICTIONS[3][4][3] = 12;
+        // RESTRICTIONS[3][4][2] = 8;
+        // RESTRICTIONS[3][4][3] = 12;
 
         // 5 - right no wall
         // right
-        //RESTRICTIONS[0][5][0] = 4;
+        // RESTRICTIONS[0][5][0] = 4;
         RESTRICTIONS[0][5][1] = 6;
-        //RESTRICTIONS[0][5][2] = 7;
-        //RESTRICTIONS[0][5][3] = 8;
+        // RESTRICTIONS[0][5][2] = 7;
+        // RESTRICTIONS[0][5][3] = 8;
         // down
         RESTRICTIONS[1][5][0] = 5;
         RESTRICTIONS[1][5][1] = 9;
@@ -189,10 +189,10 @@ public class WFCgenerator {
         RESTRICTIONS[1][7][1] = 8;
         RESTRICTIONS[1][7][2] = 11;
         // left
-        //RESTRICTIONS[2][7][0] = 5;
+        // RESTRICTIONS[2][7][0] = 5;
         RESTRICTIONS[2][7][1] = 6;
-        //RESTRICTIONS[2][7][2] = 12;
-        //RESTRICTIONS[2][7][3] = 13;
+        // RESTRICTIONS[2][7][2] = 12;
+        // RESTRICTIONS[2][7][3] = 13;
         // up
         RESTRICTIONS[3][7][0] = 3;
         RESTRICTIONS[3][7][1] = 4;
@@ -204,15 +204,15 @@ public class WFCgenerator {
         RESTRICTIONS[0][8][1] = 3;
         RESTRICTIONS[0][8][2] = 12;
         // down
-        //RESTRICTIONS[1][8][0] = 4;
+        // RESTRICTIONS[1][8][0] = 4;
         RESTRICTIONS[1][8][1] = 6;
-        //RESTRICTIONS[1][8][2] = 10;
-        //RESTRICTIONS[1][8][3] = 13;
+        // RESTRICTIONS[1][8][2] = 10;
+        // RESTRICTIONS[1][8][3] = 13;
         // left
-        //RESTRICTIONS[2][8][0] = 5;
+        // RESTRICTIONS[2][8][0] = 5;
         RESTRICTIONS[2][8][1] = 6;
-        //RESTRICTIONS[2][8][2] = 12;
-        //RESTRICTIONS[2][8][3] = 13;
+        // RESTRICTIONS[2][8][2] = 12;
+        // RESTRICTIONS[2][8][3] = 13;
         // up
         RESTRICTIONS[3][8][0] = 3;
         RESTRICTIONS[3][8][1] = 4;
@@ -253,10 +253,10 @@ public class WFCgenerator {
         RESTRICTIONS[2][10][1] = 9;
         RESTRICTIONS[2][10][2] = 10;
         // up
-        //RESTRICTIONS[3][10][1] = 2;
+        // RESTRICTIONS[3][10][1] = 2;
         RESTRICTIONS[3][10][2] = 6;
-        //RESTRICTIONS[3][10][3] = 8;
-        //RESTRICTIONS[3][10][4] = 12;
+        // RESTRICTIONS[3][10][3] = 8;
+        // RESTRICTIONS[3][10][4] = 12;
 
         // 11 - top left slightly missing wall
         // right
@@ -280,15 +280,15 @@ public class WFCgenerator {
 
         // 12 - missing right and bottom
         // right
-        //RESTRICTIONS[0][12][0] = 4;
+        // RESTRICTIONS[0][12][0] = 4;
         RESTRICTIONS[0][12][1] = 6;
-        //RESTRICTIONS[0][12][2] = 7;
-        //RESTRICTIONS[0][12][3] = 8;
+        // RESTRICTIONS[0][12][2] = 7;
+        // RESTRICTIONS[0][12][3] = 8;
         // down
-        //RESTRICTIONS[1][12][0] = 4;
+        // RESTRICTIONS[1][12][0] = 4;
         RESTRICTIONS[1][12][1] = 6;
-        //RESTRICTIONS[1][12][2] = 10;
-        //RESTRICTIONS[1][12][3] = 13;
+        // RESTRICTIONS[1][12][2] = 10;
+        // RESTRICTIONS[1][12][3] = 13;
         // left
         RESTRICTIONS[2][12][0] = 1;
         RESTRICTIONS[2][12][1] = 2;
@@ -300,10 +300,10 @@ public class WFCgenerator {
 
         // 13 - missing right and top
         // right
-        //RESTRICTIONS[0][13][0] = 4;
+        // RESTRICTIONS[0][13][0] = 4;
         RESTRICTIONS[0][13][1] = 6;
-        //RESTRICTIONS[0][13][2] = 7;
-        //RESTRICTIONS[0][13][3] = 8;
+        // RESTRICTIONS[0][13][2] = 7;
+        // RESTRICTIONS[0][13][3] = 8;
         // down
         RESTRICTIONS[1][13][0] = 5;
         RESTRICTIONS[1][13][1] = 9;
@@ -313,10 +313,10 @@ public class WFCgenerator {
         RESTRICTIONS[2][13][1] = 9;
         RESTRICTIONS[2][13][2] = 10;
         // up
-        //RESTRICTIONS[3][13][0] = 2;
+        // RESTRICTIONS[3][13][0] = 2;
         RESTRICTIONS[3][13][1] = 6;
-        //RESTRICTIONS[3][13][2] = 8;
-        //RESTRICTIONS[3][13][3] = 12;
+        // RESTRICTIONS[3][13][2] = 8;
+        // RESTRICTIONS[3][13][3] = 12;
 
     }
 
@@ -350,89 +350,194 @@ public class WFCgenerator {
         return 1; // direction 3 up opposite is down (1)
     }
 
-    public static boolean waveFunctionCollapse(int width, int height, int numTiles, int[][][] RESTRICTIONS,
-            int[][] output, int seed) {
-        // Initialize possible sets for each cell: all tiles possible
-        @SuppressWarnings("unchecked")
-        List<Set<Integer>>[] possibilities = new List[width * height];
-        for (int i = 0; i < possibilities.length; i++) {
-            Set<Integer> allTiles = new HashSet<>();
-            for (int t = 0; t < numTiles; t++)
-                allTiles.add(t);
-            possibilities[i] = new ArrayList<>();
-            possibilities[i].add(allTiles);
-        }
-
-        Random rand = new Random(seed);
-
-        while (true) {
-            // Find cell with minimum entropy > 1 (not collapsed)
-            int minOptions = numTiles + 1;
-            int minIndex = -1;
-            for (int i = 0; i < possibilities.length; i++) {
-                int size = possibilities[i].get(0).size();
-                if (size > 1 && size < minOptions) {
-                    minOptions = size;
-                    minIndex = i;
-                }
+    // --- Helper: sync output array from current possibilities ---
+    public static void syncOutputFromPossibilities(List<Set<Integer>> possibilities, int[][] output, int width,
+            int height) {
+        for (int idx = 0; idx < possibilities.size(); idx++) {
+            int x = idx % width;
+            int y = idx / width;
+            Set<Integer> s = possibilities.get(idx);
+            if (s.size() == 1) {
+                output[x][y] = s.iterator().next();
+            } else {
+                output[x][y] = -1; // not finalized yet
             }
+        }
+    }
 
-            if (minIndex == -1)
-                break; // All cells collapsed or no choices
+    // --- Propagation function returns false on contradiction ---
+    public static boolean propagate(int width, int height, int[][][] RESTRICTIONS,
+            List<Set<Integer>> possibilities, int startIndex, int[][] output) {
 
-            // Collapse cell - pick one tile randomly from possible
-            Set<Integer> opts = possibilities[minIndex].get(0);
-            int chosenTile = opts.stream().skip(rand.nextInt(opts.size())).findFirst().get();
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(startIndex);
 
-            // Set only the chosen tile and save to output
-            opts.clear();
-            opts.add(chosenTile);
-            output[minIndex % width][minIndex / width] = chosenTile;
+        int[][] offsets = { { 1, 0 }, { 0, 1 }, { -1, 0 }, { 0, -1 } };
 
-            // Propagate constraints
-            Queue<Integer> queue = new LinkedList<>();
-            queue.add(minIndex);
+        while (!queue.isEmpty()) {
+            int idx = queue.poll();
+            int x = idx % width;
+            int y = idx / width;
 
-            while (!queue.isEmpty()) {
-                int idx = queue.poll();
-                int x = idx % width;
-                int y = idx / width;
-                int tile = possibilities[idx].get(0).iterator().next();
+            // Current possible set for this cell
+            Set<Integer> currentSet = possibilities.get(idx);
 
-                // For each neighbor direction
-                int[][] offsets = { { 1, 0 }, { 0, 1 }, { -1, 0 }, { 0, -1 } };
-                for (int dir = 0; dir < 4; dir++) {
-                    int nx = x + offsets[dir][0];
-                    int ny = y + offsets[dir][1];
+            for (int dir = 0; dir < 4; dir++) {
+                int nx = x + offsets[dir][0];
+                int ny = y + offsets[dir][1];
+                if (nx < 0 || nx >= width || ny < 0 || ny >= height)
+                    continue;
+                int nIndex = ny * width + nx;
 
-                    if (nx < 0 || nx >= width || ny < 0 || ny >= height)
-                        continue;
-                    int nIndex = ny * width + nx;
+                Set<Integer> neighborSet = possibilities.get(nIndex);
+                if (neighborSet.size() == 1)
+                    continue;
 
-                    Set<Integer> neighborPossibles = possibilities[nIndex].get(0);
-                    if (neighborPossibles.size() == 1)
-                        continue;
+                // Allowed neighbors are union of allowed tiles for every possible tile in
+                // current cell
+                Set<Integer> allowed = new HashSet<>();
+                for (int t : currentSet) {
+                    allowed.addAll(getAllowedNeighbors(dir, t, RESTRICTIONS));
+                }
 
-                    // Allowed neighbor tiles for current tile in this direction
-                    Set<Integer> allowed = getAllowedNeighbors(dir, tile, RESTRICTIONS);
+                // Keep only allowed tiles for neighbor
+                int before = neighborSet.size();
+                neighborSet.retainAll(allowed);
 
-                    boolean changed = neighborPossibles.retainAll(allowed);
-                    if (changed) {
-                        queue.add(nIndex);
-                        if (neighborPossibles.size() == 1) {
-                            output[nx][ny] = neighborPossibles.iterator().next();
-                        }
-                        if (neighborPossibles.isEmpty()) {
-                            // Contradiction - for simplicity, just break out
-                            System.out.println("Contradiction found! No possible tiles.");
-                            return false;
-                        }
+                if (neighborSet.isEmpty()) {
+                    // contradiction
+                    return false;
+                }
+
+                if (neighborSet.size() < before) {
+                    // Neighbor changed -> add to queue and if it became singleton update output
+                    queue.add(nIndex);
+                    if (neighborSet.size() == 1) {
+                        output[nx][ny] = neighborSet.iterator().next();
                     }
                 }
             }
         }
 
         return true;
+    }
+
+    // --- Wave Function Collapse with backtracking + correct output syncing ---
+    public static boolean waveFunctionCollapse(int width, int height, int numTiles, int[][][] RESTRICTIONS,
+            int[][] output, int seed) {
+
+        Random rand = new Random(seed);
+
+        // Initialize possibilities: every cell has all tiles initially
+        List<Set<Integer>> possibilities = new ArrayList<>();
+        for (int i = 0; i < width * height; i++) {
+            Set<Integer> all = new HashSet<>();
+            for (int t = 0; t < numTiles; t++)
+                all.add(t);
+            possibilities.add(all);
+        }
+        // initialize output as not set
+        for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
+                output[x][y] = -1;
+
+        // Backtracking stack saves deep-copied possibilities and the index chosen &
+        // tile chosen
+        class State {
+            List<Set<Integer>> possCopy;
+            int chosenIndex;
+            int triedTile; // tile we tried at time of saving; useful to remove next try
+
+            State(List<Set<Integer>> possCopy, int chosenIndex, int triedTile) {
+                this.possCopy = new ArrayList<>();
+                for (Set<Integer> s : possCopy)
+                    this.possCopy.add(new HashSet<>(s));
+                this.chosenIndex = chosenIndex;
+                this.triedTile = triedTile;
+            }
+        }
+        LinkedList<State> stack = new LinkedList<>();
+
+        while (true) {
+            // Find cell with minimum entropy (>1)
+            int minOptions = Integer.MAX_VALUE;
+            int minIndex = -1;
+            for (int i = 0; i < possibilities.size(); i++) {
+                int s = possibilities.get(i).size();
+                if (s > 1 && s < minOptions) {
+                    minOptions = s;
+                    minIndex = i;
+                }
+            }
+
+            if (minIndex == -1) {
+                // All cells have size 1 -> fully collapsed
+                syncOutputFromPossibilities(possibilities, output, width, height);
+                // verify no -1 remains
+                for (int x = 0; x < width; x++)
+                    for (int y = 0; y < height; y++) {
+                        if (output[x][y] == -1) {
+                            // something went wrong, treat as failure
+                            return false;
+                        }
+                    }
+                return true;
+            }
+
+            // Select a tile to try (simple uniform random; replace with weightedRandom if
+            // desired)
+            List<Integer> opts = new ArrayList<>(possibilities.get(minIndex));
+            int chosenTile = opts.get(rand.nextInt(opts.size()));
+
+            // Save state before committing (deep copy)
+            stack.push(new State(possibilities, minIndex, chosenTile));
+
+            // Commit: collapse this cell to chosenTile
+            possibilities = new ArrayList<>();
+            // copy latest state's poss to work on it (important because we saved prior
+            // state on stack)
+            State top = stack.peek();
+            for (Set<Integer> s : top.possCopy)
+                possibilities.add(new HashSet<>(s));
+
+            // Now apply the chosen tile
+            Set<Integer> targetSet = possibilities.get(minIndex);
+            targetSet.clear();
+            targetSet.add(chosenTile);
+            syncOutputFromPossibilities(possibilities, output, width, height);
+
+            // Propagate constraints from this index
+            boolean ok = propagate(width, height, RESTRICTIONS, possibilities, minIndex, output);
+            if (!ok) {
+                // Contradiction -> backtrack to previous saved states and try other tile
+                boolean backtracked = false;
+                while (!stack.isEmpty()) {
+                    State prev = stack.pop();
+                    // Start from prev.possCopy but forbid the tried tile
+                    List<Set<Integer>> restored = new ArrayList<>();
+                    for (Set<Integer> s : prev.possCopy)
+                        restored.add(new HashSet<>(s));
+                    Set<Integer> cellSet = restored.get(prev.chosenIndex);
+                    cellSet.remove(prev.triedTile);
+                    if (!cellSet.isEmpty()) {
+                        // we can continue from here: set possibilities = restored, sync output and
+                        // continue main loop
+                        possibilities = restored;
+                        syncOutputFromPossibilities(possibilities, output, width, height);
+                        backtracked = true;
+                        break;
+                    }
+                    // else that state has no alternative tiles -> keep popping
+                }
+                if (!backtracked) {
+                    // Nothing left to try
+                    System.out.println("Backtracking exhausted all possibilities.");
+                    return false;
+                }
+                // continue main loop from restored state (no immediate propagation required;
+                // main loop will pick minIndex again)
+            }
+        }
     }
 
     public static void main(String[] args) {
