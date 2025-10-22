@@ -9,29 +9,30 @@ using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class MapGenerator : MonoBehaviour
 {
-    private int[,] map =
-    {
-        {0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 1, 1, 1, 0, 1, 1, 1, 0, 0},
-        {0, 0, 0, 1, 0, 1, 0, 1, 0, 0},
-        {0, 0, 0, 1, 1, 1, 0, 1, 1, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
-        {0, 0, 0, 0, 0, 0, 1, 1, 1, 0},
-        {0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
-        {0, 0, 0, 1, 1, 1, 1, 0, 0, 0},
-        {0, 1, 1, 1, 0, 0, 0, 0, 0, 0},
-        {0, 1, 0, 0, 0, 0, 0, 0, 0, 0}
-    };
+    //private int[,] map =
+    //{
+    //    {0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    //    {0, 1, 1, 1, 0, 1, 1, 1, 0, 0},
+    //    {0, 0, 0, 1, 0, 1, 0, 1, 0, 0},
+    //    {0, 0, 0, 1, 1, 1, 0, 1, 1, 0},
+    //    {0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
+    //    {0, 0, 0, 0, 0, 0, 1, 1, 1, 0},
+    //    {0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+    //    {0, 0, 0, 1, 1, 1, 1, 0, 0, 0},
+    //    {0, 1, 1, 1, 0, 0, 0, 0, 0, 0},
+    //    {0, 1, 0, 0, 0, 0, 0, 0, 0, 0}
+    //};
 
-    [SerializeField] private GameObject wall;
-    [SerializeField] private GameObject floor;
+    //[SerializeField] private GameObject wall;
+    //[SerializeField] private GameObject floor;
 
     [SerializeField] private Tilemap tileMap;
-    [SerializeField] private TileBase[] tiles;
+    [SerializeField] private TileData[] tileArray;
     [SerializeField] private TextAsset csvFile;
+    private int[,] mapData;
 
-    public int MapWidth { get { return map.GetLength(1); } }
-    public int MapHeight { get { return map.GetLength(0); } }
+    public int MapWidth { get; set; }
+    public int MapHeight { get; set; }
 
     // Start is called before the first frame update
     void Start()
@@ -40,21 +41,21 @@ public class MapGenerator : MonoBehaviour
         LoadCSVFile();
     }
 
-    void GenerateMap()
-    {
-        Vector2 startPos = new Vector2(-MapWidth / 2f + 0.5f, MapHeight / 2f - 0.5f);
+    //void GenerateMap()
+    //{
+    //    Vector2 startPos = new Vector2(-MapWidth / 2f + 0.5f, MapHeight / 2f - 0.5f);
 
-        for (int y = 0; y < MapHeight; y++)
-        {
-            for (int x = 0; x < MapWidth; x++)
-            {
-                GameObject tile = map[y, x] == 1 ? floor : wall;
-                float tileSize = 1f;
-                Vector2 pos = new Vector2(startPos.x + x * tileSize, startPos.y - y * tileSize);    // Generate from the center of the camera
-                Instantiate(tile, pos, Quaternion.identity);
-            }
-        }
-    }
+    //    for (int y = 0; y < MapHeight; y++)
+    //    {
+    //        for (int x = 0; x < MapWidth; x++)
+    //        {
+    //            GameObject tile = map[y, x] == 1 ? floor : wall;
+    //            float tileSize = 1f;
+    //            Vector2 pos = new Vector2(startPos.x + x * tileSize, startPos.y - y * tileSize);    // Generate from the center of the camera
+    //            Instantiate(tile, pos, Quaternion.identity);
+    //        }
+    //    }
+    //}
 
     void LoadCSVFile()
     {
@@ -64,29 +65,44 @@ public class MapGenerator : MonoBehaviour
             return;
         }
 
-        string[] lines = csvFile.text.Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
-        int height = lines.Length;
-        int width = lines[0].Split(',').Length;
+        string[] lines = csvFile.text.Split('\n');
+        MapHeight = lines.Length;
+        MapWidth = lines[0].Split(',').Length;
+
+        mapData = new int[MapHeight, MapWidth];                             // Store tile map coords
         
-        for (int y = 0; y < height; y++)                                // Each row from top to bottom
+        for (int y = 0; y < MapHeight; y++)                                 // Each row from top to bottom
         {
             string line = lines[y].Trim();
             if (string.IsNullOrEmpty(line)) continue;
 
-            string[] values = line.Split(',');
+            string[] cells = line.Split(',');
 
-            for (int x = 0; x < width; x++)                             // Each column from left to right
+            for (int x = 0; x < cells.Length; x++)                          // Each column from left to right
             {
-                if (int.TryParse(values[x], out int tileIndex))         // Convert string to int
+                int tileIndex = int.Parse(cells[x]);
+                if (tileIndex >= 0 && tileIndex < tileArray.Length)
                 {
-                    if (tileIndex >= 0 && tileIndex < tiles.Length)
-                    {
-                        Vector3Int pos = new Vector3Int(x, -y, 0);      // Tile position on the tilemap
-                        tileMap.SetTile(pos, tiles[tileIndex]);
-                    }
+                    Tile tile = ScriptableObject.CreateInstance<Tile>();
+                    tile.sprite = tileArray[tileIndex].sprite;
+                    tile.colliderType = tileArray[tileIndex].colliderType;
+
+                    Vector3Int pos = new Vector3Int(x, -y, 0);
+                    tileMap.SetTile(pos, tile);
                 }
             }
         }
+
+        CenterTilemap();
+    }
+
+    void CenterTilemap()
+    {
+        BoundsInt bounds = tileMap.cellBounds;
+        Vector3 mapCenter = tileMap.localBounds.center;
+
+        Camera cam = Camera.main;
+        cam.transform.position = new Vector3(mapCenter.x - 7, mapCenter.y + 5, cam.transform.position.z);
     }
 
     //private void OnDrawGizmos()
