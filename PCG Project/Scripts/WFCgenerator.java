@@ -1,4 +1,4 @@
-// version: 0.1
+// version: 0.2
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -11,6 +11,7 @@ import java.util.Set;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.*;
 
 public class WFCgenerator {
 
@@ -32,6 +33,7 @@ public class WFCgenerator {
         }
     }
 
+<<<<<<< Updated upstream
     public static void setRestriction(int[][][] RESTRICTIONS) {
         // setting the restrictions manually
         // based on the "tilemap.png"
@@ -330,6 +332,8 @@ public class WFCgenerator {
         }
     }
 
+=======
+>>>>>>> Stashed changes
     public static Set<Integer> getAllowedNeighbors(int direction, int tile, int[][][] RESTRICTIONS) {
         Set<Integer> allowed = new HashSet<>();
         for (int t : RESTRICTIONS[direction][tile]) {
@@ -563,12 +567,11 @@ public class WFCgenerator {
         // DEFINING THE TILE SET CONSTRAINTS
 
         // array[DIRECTION][INDEX OF ORIGIN][INDEX OF MATCHING TILE]
-        int[][][] RESTRICTIONS = new int[4][numTiles][numTiles];
-
-        // setting all the values as -1
-        // meaning as there are no restrictions
-        setValue(RESTRICTIONS, -1);
-        setRestriction(RESTRICTIONS);
+        int[][][] RESTRICTIONS = util.getRestrictions("../Assets/tilemap2.png");
+        if (RESTRICTIONS == null) {
+            System.out.println("Failed to generate restrictions.");
+            return;
+        }
 
         // actuall wfc - 10 retries by default
         boolean success = false;
@@ -592,6 +595,7 @@ public class WFCgenerator {
 
         if (success) {
             System.out.println("WFC succeeded!");
+            worldArray = util.transpone(worldArray);
             write2DArrayToCSV(worldArray, "../Assets/output.csv");
         } else {
             System.out.println("WFC failed after " + maxAttempts + " attempts.");
