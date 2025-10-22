@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 584948845495867236}
   - component: {fileID: 1779260838166495562}
   - component: {fileID: 6830893757240356249}
+  - component: {fileID: 9204316216849352493}
   m_Layer: 0
   m_Name: Map
   m_TagString: Untagged
@@ -50,6 +51,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wall: {fileID: 1079662637295406543, guid: 16c8ec4bbef4c1444895412dd4a3805a, type: 3}
   floor: {fileID: 5907531553667073803, guid: 0a6f9a7f7739263448d497fc6f64d078, type: 3}
+  tileMap: {fileID: 5708043391835245126}
+  tiles:
+  - {fileID: 11400000, guid: 4c3905dc58cb8e649b23eb6149cfe6a5, type: 2}
+  - {fileID: 11400000, guid: 81e7077e814147a48b286b3010d1de4c, type: 2}
+  - {fileID: 11400000, guid: 402619ee427f68d4a9a6ef537a63b33f, type: 2}
+  - {fileID: 11400000, guid: c586c2cbdb1f0ec4ab229f31550c6830, type: 2}
+  - {fileID: 11400000, guid: ae33c21092f866242b6e0403dd509ea8, type: 2}
+  - {fileID: 11400000, guid: baab4c0ec78d8e944bb8f7ebc5dc8492, type: 2}
+  - {fileID: 11400000, guid: 29063c0679bdf704a8727616c80fc85d, type: 2}
+  - {fileID: 11400000, guid: 3651ddc6260b5704a806f7a7b670a43a, type: 2}
+  - {fileID: 11400000, guid: 9760faefecb840d4e85e0b5cc8080335, type: 2}
+  - {fileID: 11400000, guid: e9f092f9a04791b4bb7dd84eb0ba24b1, type: 2}
+  - {fileID: 11400000, guid: a29117b591fcefa4b90e50d8355947b3, type: 2}
+  - {fileID: 11400000, guid: 151076f9d34648744ab91c872adf6771, type: 2}
+  - {fileID: 11400000, guid: b7e3dfec063380f48b6b65a8457db2ad, type: 2}
+  csvFile: {fileID: 4900000, guid: 2b1ba2e1613457b4b92d5eb61f6ff60b, type: 3}
 --- !u!1839735485 &5708043391835245126
 Tilemap:
   m_ObjectHideFlags: 0
@@ -57,18 +74,52 @@ Tilemap:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 949720042777540416}
-  m_Enabled: 1
-  m_Tiles: {}
+  m_Enabled: 0
+  m_Tiles:
+  - first: {x: 5, y: -3, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741826
   m_AnimatedTiles: {}
-  m_TileAssetArray: []
-  m_TileSpriteArray: []
-  m_TileMatrixArray: []
-  m_TileColorArray: []
+  m_TileAssetArray:
+  - m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: 4c3905dc58cb8e649b23eb6149cfe6a5, type: 2}
+  m_TileSpriteArray:
+  - m_RefCount: 1
+    m_Data: {fileID: 405495046, guid: 1648a7e1d837bbe478b5042d79d917d8, type: 3}
+  m_TileMatrixArray:
+  - m_RefCount: 1
+    m_Data:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+  m_TileColorArray:
+  - m_RefCount: 1
+    m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Origin: {x: 0, y: 0, z: 0}
-  m_Size: {x: 0, y: 0, z: 1}
+  m_Origin: {x: 0, y: -3, z: 0}
+  m_Size: {x: 6, y: 3, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -189,10 +240,71 @@ CompositeCollider2D:
   m_EdgeRadius: 0
   m_ColliderPaths:
   - m_Collider: {fileID: 584948845495867236}
-    m_ColliderPaths: []
+    m_ColliderPaths:
+    - - X: 60000000
+        Y: -20000000
+      - X: 50000000
+        Y: -20000000
+      - X: 50000000
+        Y: -30000000
+      - X: 60000000
+        Y: -30000000
   m_CompositePaths:
-    m_Paths: []
+    m_Paths:
+    - - {x: 5.999971, y: -3}
+      - {x: 5.999971, y: -2}
+      - {x: 5, y: -2.0000293}
+      - {x: 5.000029, y: -3}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
   m_UseDelaunayMesh: 0
   m_CompositeGameObject: {fileID: 949720042777540416}
+--- !u!483693784 &9204316216849352493
+TilemapRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 949720042777540416}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_ChunkSize: {x: 32, y: 32, z: 32}
+  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_MaxChunkCount: 16
+  m_MaxFrameAge: 16
+  m_SortOrder: 2
+  m_Mode: 1
+  m_DetectChunkCullingBounds: 0
+  m_MaskInteraction: 0

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using static Unity.VisualScripting.Member;
+using static UnityEditor.IMGUI.Controls.PrimitiveBoundsHandle;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -23,10 +26,9 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private GameObject wall;
     [SerializeField] private GameObject floor;
 
-    private Tilemap tileMap;
+    [SerializeField] private Tilemap tileMap;
     [SerializeField] private TileBase[] tiles;
-    private TextAsset csvFile;
-    //private int[,] mapData;
+    [SerializeField] private TextAsset csvFile;
 
     public int MapWidth { get { return map.GetLength(1); } }
     public int MapHeight { get { return map.GetLength(0); } }
@@ -34,8 +36,8 @@ public class MapGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GenerateMap();
-        //LoadCSVFile();
+        //GenerateMap();
+        LoadCSVFile();
     }
 
     void GenerateMap()
@@ -62,8 +64,7 @@ public class MapGenerator : MonoBehaviour
             return;
         }
 
-        string path = Path.Combine(Application.streamingAssetsPath, "map.csv");
-        string[] lines = File.ReadAllLines(path);
+        string[] lines = csvFile.text.Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
         int height = lines.Length;
         int width = lines[0].Split(',').Length;
         
@@ -81,40 +82,30 @@ public class MapGenerator : MonoBehaviour
                     if (tileIndex >= 0 && tileIndex < tiles.Length)
                     {
                         Vector3Int pos = new Vector3Int(x, -y, 0);      // Tile position on the tilemap
-
-                        Tile t = ScriptableObject.Instantiate(tiles[tileIndex]) as Tile;            // Clone tile to change collider type
-                        if (tileIndex == 4 || tileIndex == 10 || tileIndex == 13)
-                        {
-                            t.colliderType = Tile.ColliderType.None;
-                        }
-                        else
-                        {
-                            t.colliderType = Tile.ColliderType.Grid;
-                        }
-                        tileMap.SetTile(pos, t);
+                        tileMap.SetTile(pos, tiles[tileIndex]);
                     }
                 }
             }
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        if (map == null) return;
+    //private void OnDrawGizmos()
+    //{
+    //    if (map == null) return;
 
-        float tileSize = 1f;
-        Vector2 startPos = new Vector2(-MapWidth / 2f + 0.5f, MapHeight / 2f - 0.5f);
+    //    float tileSize = 1f;
+    //    Vector2 startPos = new Vector2(-MapWidth / 2f + 0.5f, MapHeight / 2f - 0.5f);
 
-        for (int y = 0; y < MapHeight; y++)
-        {
-            for (int x = 0; x < MapWidth; x++)
-            {
-                Vector2 pos = new Vector2(startPos.x + x * tileSize, startPos.y - y * tileSize);
-                Gizmos.color = map[y, x] == 1 ? Color.green : Color.red;
-                Gizmos.DrawWireCube(pos, Vector3.one * 0.9f);
-            }
-        }
-    }
+    //    for (int y = 0; y < MapHeight; y++)
+    //    {
+    //        for (int x = 0; x < MapWidth; x++)
+    //        {
+    //            Vector2 pos = new Vector2(startPos.x + x * tileSize, startPos.y - y * tileSize);
+    //            Gizmos.color = map[y, x] == 1 ? Color.green : Color.red;
+    //            Gizmos.DrawWireCube(pos, Vector3.one * 0.9f);
+    //        }
+    //    }
+    //}
 
     // Update is called once per frame
     void Update()
