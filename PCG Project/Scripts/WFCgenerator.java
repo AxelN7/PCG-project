@@ -1,4 +1,4 @@
-// version: 0.2
+// version: 0.3
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -61,9 +61,9 @@ public class WFCgenerator {
             int y = idx / width;
             Set<Integer> s = possibilities.get(idx);
             if (s.size() == 1) {
-                output[x][y] = s.iterator().next();
+                output[y][x] = s.iterator().next();
             } else {
-                output[x][y] = -1; // not finalized yet
+                output[y][x] = -1; // not finalized yet
             }
         }
     }
@@ -93,8 +93,7 @@ public class WFCgenerator {
                 int nIndex = ny * width + nx;
 
                 Set<Integer> neighborSet = possibilities.get(nIndex);
-                if (neighborSet.size() == 1)
-                    continue;
+                //if (neighborSet.size() == 1) continue;
 
                 // Allowed neighbors are union of allowed tiles for every possible tile in
                 // current cell
@@ -116,7 +115,9 @@ public class WFCgenerator {
                     // Neighbor changed -> add to queue and if it became singleton update output
                     queue.add(nIndex);
                     if (neighborSet.size() == 1) {
-                        output[nx][ny] = neighborSet.iterator().next();
+                        output[ny][nx] = neighborSet.iterator().next();
+                    } else {
+                        output[ny][nx] = -1;
                     }
                 }
             }
@@ -142,7 +143,7 @@ public class WFCgenerator {
         // initialize output as not set
         for (int x = 0; x < width; x++)
             for (int y = 0; y < height; y++)
-                output[x][y] = -1;
+                output[y][x] = -1;
 
         // Backtracking stack saves deep-copied possibilities and the index chosen &
         // tile chosen
@@ -294,7 +295,7 @@ public class WFCgenerator {
 
         if (success) {
             System.out.println("WFC succeeded!");
-            worldArray = util.transpone(worldArray);
+            //worldArray = util.transpone(worldArray);
             write2DArrayToCSV(worldArray, "../Assets/output.csv");
         } else {
             System.out.println("WFC failed after " + maxAttempts + " attempts.");
