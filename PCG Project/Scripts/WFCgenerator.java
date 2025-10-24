@@ -4,14 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -22,6 +19,7 @@ import java.util.Queue;
 
 public class WFCgenerator {
 
+    // helper function for the CSV output, which is used in unity
     public static void write2DArrayToCSV(int[][] array, String filePath) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
             for (int i = 0; i < array.length; i++) {
@@ -40,7 +38,7 @@ public class WFCgenerator {
         }
     }
 
-    // VISUALIZER PART
+    // load tiles from tilemap
     public static BufferedImage[] loadTiles(String path, int tileWidth, int tileHeight) throws IOException {
         BufferedImage tileset = ImageIO.read(new File(path));
         int tilesPerRow = tileset.getWidth() / tileWidth;
@@ -55,18 +53,16 @@ public class WFCgenerator {
         return tiles;
     }
 
-    public static int[][] loadCSV(String filePath) throws IOException {
-        List<String> lines = Files.readAllLines(Paths.get(filePath));
-        int height = lines.size();
-        int width = lines.get(0).split(",").length;
-        int[][] arr = new int[height][width];
-        for (int y = 0; y < height; y++) {
-            String[] parts = lines.get(y).split(",");
-            for (int x = 0; x < width; x++) {
-                arr[y][x] = Integer.parseInt(parts[x]);
+    // update swing for every change in the map, every {delay} miliseconds
+    private static void visualizeStep(TileVisualizer visualizer, int delay) {
+        if (visualizer != null) {
+            SwingUtilities.invokeLater(visualizer::repaint);
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
             }
         }
-        return arr;
     }
 
     public static class TileVisualizer extends JPanel {
@@ -96,6 +92,7 @@ public class WFCgenerator {
         }
     }
 
+    // wfc helper function, to find which of the neighbours are still availaible
     public static Set<Integer> getAllowedNeighbors(int direction, int tile, int[][][] RESTRICTIONS) {
         Set<Integer> allowed = new HashSet<>();
         for (int t : RESTRICTIONS[direction][tile]) {
@@ -116,7 +113,7 @@ public class WFCgenerator {
         return 1; // direction 3 up opposite is down (1)
     }
 
-    // --- Helper: sync output array from current possibilities ---
+    // sync output array from current possibilities
     public static void syncOutputFromPossibilities(List<Set<Integer>> possibilities, int[][] output, int width,
             int height) {
         for (int idx = 0; idx < possibilities.size(); idx++) {
@@ -131,7 +128,7 @@ public class WFCgenerator {
         }
     }
 
-    // --- Propagation function returns false on contradiction ---
+    // propagation function which returns false on contradiction
     public static boolean propagate(int width, int height, int[][][] RESTRICTIONS,
             List<Set<Integer>> possibilities, int startIndex, int[][] output) {
 
@@ -145,7 +142,7 @@ public class WFCgenerator {
             int x = idx % width;
             int y = idx / width;
 
-            // Current possible set for this cell
+            // current possible set for this cell
             Set<Integer> currentSet = possibilities.get(idx);
 
             for (int dir = 0; dir < 4; dir++) {
@@ -158,14 +155,14 @@ public class WFCgenerator {
                 Set<Integer> neighborSet = possibilities.get(nIndex);
                 // if (neighborSet.size() == 1) continue;
 
-                // Allowed neighbors are union of allowed tiles for every possible tile in
+                // allowed neighbors are union of allowed tiles for every possible tile in
                 // current cell
                 Set<Integer> allowed = new HashSet<>();
                 for (int t : currentSet) {
                     allowed.addAll(getAllowedNeighbors(dir, t, RESTRICTIONS));
                 }
 
-                // Keep only allowed tiles for neighbor
+                // keep only allowed tiles for neighbor
                 int before = neighborSet.size();
                 neighborSet.retainAll(allowed);
 
@@ -175,7 +172,7 @@ public class WFCgenerator {
                 }
 
                 if (neighborSet.size() < before) {
-                    // Neighbor changed -> add to queue and if it became singleton update output
+                    // neighbor changed -> add to queue and if it became singleton update output
                     queue.add(nIndex);
                     if (neighborSet.size() == 1) {
                         output[ny][nx] = neighborSet.iterator().next();
@@ -189,13 +186,11 @@ public class WFCgenerator {
         return true;
     }
 
-    // --- Wave Function Collapse with backtracking + correct output syncing ---
+    // wave function collapse with backtracking and output syncing
     public static boolean waveFunctionCollapse(int width, int height, int numTiles, int[][][] RESTRICTIONS,
-            int[][] output, int seed) {
+            int[][] output, int seed, TileVisualizer visualizer, int delay) {
 
         Random rand = new Random(seed);
-
-        // Initialize possibilities: every cell has all tiles initially
         List<Set<Integer>> possibilities = new ArrayList<>();
         for (int i = 0; i < width * height; i++) {
             Set<Integer> all = new HashSet<>();
@@ -203,17 +198,14 @@ public class WFCgenerator {
                 all.add(t);
             possibilities.add(all);
         }
-        // initialize output as not set
+
         for (int x = 0; x < width; x++)
             for (int y = 0; y < height; y++)
                 output[y][x] = -1;
 
-        // Backtracking stack saves deep-copied possibilities and the index chosen &
-        // tile chosen
         class State {
             List<Set<Integer>> possCopy;
-            int chosenIndex;
-            int triedTile; // tile we tried at time of saving; useful to remove next try
+            int chosenIndex, triedTile;
 
             State(List<Set<Integer>> possCopy, int chosenIndex, int triedTile) {
                 this.possCopy = new ArrayList<>();
@@ -223,10 +215,10 @@ public class WFCgenerator {
                 this.triedTile = triedTile;
             }
         }
+
         LinkedList<State> stack = new LinkedList<>();
 
         while (true) {
-            // Find cell with minimum entropy (>1)
             int minOptions = Integer.MAX_VALUE;
             int minIndex = -1;
             for (int i = 0; i < possibilities.size(); i++) {
@@ -238,71 +230,50 @@ public class WFCgenerator {
             }
 
             if (minIndex == -1) {
-                // All cells have size 1 -> fully collapsed
                 syncOutputFromPossibilities(possibilities, output, width, height);
-                // verify no -1 remains
-                for (int x = 0; x < width; x++)
-                    for (int y = 0; y < height; y++) {
-                        if (output[x][y] == -1) {
-                            // something went wrong, treat as failure
-                            return false;
-                        }
-                    }
+                visualizeStep(visualizer, delay);
                 return true;
             }
 
-            // Select a tile to try (simple uniform random; replace with weightedRandom if
-            // desired)
             List<Integer> opts = new ArrayList<>(possibilities.get(minIndex));
             int chosenTile = opts.get(rand.nextInt(opts.size()));
-
-            // Save state before committing (deep copy)
             stack.push(new State(possibilities, minIndex, chosenTile));
 
-            // Commit: collapse this cell to chosenTile
-            possibilities = new ArrayList<>();
-            // copy latest state's poss to work on it (important because we saved prior
-            // state on stack)
             State top = stack.peek();
+            possibilities = new ArrayList<>();
             for (Set<Integer> s : top.possCopy)
                 possibilities.add(new HashSet<>(s));
 
-            // Now apply the chosen tile
             Set<Integer> targetSet = possibilities.get(minIndex);
             targetSet.clear();
             targetSet.add(chosenTile);
             syncOutputFromPossibilities(possibilities, output, width, height);
+            visualizeStep(visualizer, delay); // show collapse
 
-            // Propagate constraints from this index
             boolean ok = propagate(width, height, RESTRICTIONS, possibilities, minIndex, output);
+            visualizeStep(visualizer, delay); // show propagation changes
+
             if (!ok) {
-                // Contradiction -> backtrack to previous saved states and try other tile
                 boolean backtracked = false;
                 while (!stack.isEmpty()) {
                     State prev = stack.pop();
-                    // Start from prev.possCopy but forbid the tried tile
                     List<Set<Integer>> restored = new ArrayList<>();
                     for (Set<Integer> s : prev.possCopy)
                         restored.add(new HashSet<>(s));
                     Set<Integer> cellSet = restored.get(prev.chosenIndex);
                     cellSet.remove(prev.triedTile);
                     if (!cellSet.isEmpty()) {
-                        // we can continue from here: set possibilities = restored, sync output and
-                        // continue main loop
                         possibilities = restored;
                         syncOutputFromPossibilities(possibilities, output, width, height);
+                        visualizeStep(visualizer, delay); // show backtracking
                         backtracked = true;
                         break;
                     }
-                    // else that state has no alternative tiles -> keep popping
                 }
                 if (!backtracked) {
-                    // Nothing left to try
                     System.out.println("Backtracking exhausted all possibilities.");
                     return false;
                 }
-                // continue main loop from restored state (no immediate propagation required;
-                // main loop will pick minIndex again)
             }
         }
     }
@@ -319,60 +290,61 @@ public class WFCgenerator {
         System.out.println("SEED: ");
         int seed = sc.nextInt();
 
-        int[][] worldArray = new int[height][width]; // fix: rows are Y, columns are X
+        sc.close();
 
-        // array[DIRECTION][INDEX OF ORIGIN][INDEX OF MATCHING TILE]
+        int[][] worldArray = new int[height][width]; // rows = Y, columns = X
+
+        // Load tile restrictions
         int[][][] RESTRICTIONS = util.getRestrictions("../Assets/tilemap2.png");
         if (RESTRICTIONS == null) {
             System.out.println("Failed to generate restrictions.");
-            sc.close();
             return;
         }
 
-        boolean success = false;
-        int attempts = 0;
-        int maxAttempts = 100;
-        int trySeed = seed;
-
-        while (!success && attempts < maxAttempts) {
-            for (int i = 0; i < height; i++) { // fix: row first
-                for (int j = 0; j < width; j++) {
-                    worldArray[i][j] = -1;
-                }
-            }
-
-            System.out.println("Attempt " + (attempts + 1) + " with seed " + trySeed);
-            success = waveFunctionCollapse(width, height, numTiles, RESTRICTIONS, worldArray, trySeed);
-            attempts++;
-            trySeed++;
-        }
-
-        if (success) {
-            System.out.println("WFC succeeded!");
-            write2DArrayToCSV(worldArray, "../Assets/output.csv");
-        } else {
-            System.out.println("WFC failed after " + maxAttempts + " attempts.");
-        }
-
-        // Always output final array
-        write2DArrayToCSV(worldArray, "../Assets/output.csv");
-
-        // --- Launch Visualizer (with Swing) ---
+        // initialize visualizer
+        TileVisualizer panel = null;
         try {
             int tileWidth = 16;
             int tileHeight = 16;
             BufferedImage[] tiles = loadTiles("../Assets/tilemap2.png", tileWidth, tileHeight);
             JFrame frame = new JFrame("WFC Visualizer");
-            TileVisualizer panel = new TileVisualizer(worldArray, tiles, tileWidth, tileHeight);
+            panel = new TileVisualizer(worldArray, tiles, tileWidth, tileHeight);
             frame.add(panel);
             frame.pack();
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         } catch (IOException e) {
-            System.out.println("Visualizer failed: " + e.getMessage());
+            System.out.println("Visualizer failed to load tiles: " + e.getMessage());
         }
 
-        sc.close();
+        // run wave function collapse
+        boolean success = false;
+        int attempts = 0;
+        int maxAttempts = 100;
+        int trySeed = seed;
+        int delay = 10;
+
+        while (!success && attempts < maxAttempts) {
+            // reset world array
+            for (int y = 0; y < height; y++)
+                Arrays.fill(worldArray[y], -1);
+
+            System.out.println("Attempt " + (attempts + 1) + " with seed " + trySeed);
+            success = waveFunctionCollapse(width, height, numTiles, RESTRICTIONS, worldArray, trySeed, panel, delay);
+
+            attempts++;
+            trySeed++;
+        }
+
+        // output the results
+        if (success) {
+            System.out.println("WFC succeeded!");
+        } else {
+            System.out.println("WFC failed after " + maxAttempts + " attempts.");
+        }
+
+        write2DArrayToCSV(worldArray, "../Assets/output.csv");
     }
+
 }
