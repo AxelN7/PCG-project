@@ -8,8 +8,8 @@ import javax.imageio.ImageIO;
 
 
 public class util {
-    public static int NR_TILES_ROW = 4;
-    public static int NR_TILES = 16;
+    public static int NR_TILES_ROW = 12;
+    public static int NR_TILES = 61;
     public static int TILE_SIZE = 16;
 
     public static int[][][] tiles = new int[4][NR_TILES][NR_TILES];
