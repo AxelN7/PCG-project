@@ -10,9 +10,6 @@ import java.io.IOException;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 import java.util.*;
 import java.util.List;
 import java.util.Queue;
@@ -218,6 +215,15 @@ public class WFCgenerator {
 
         LinkedList<State> stack = new LinkedList<>();
 
+        // setting the weights for all 61 tiles
+        double[] tileWeights = {
+                1.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0,
+                1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
+                0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
+                0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125,
+                0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
+                5.0, 15.0 };
+
         while (true) {
             int minOptions = Integer.MAX_VALUE;
             int minIndex = -1;
@@ -236,7 +242,23 @@ public class WFCgenerator {
             }
 
             List<Integer> opts = new ArrayList<>(possibilities.get(minIndex));
-            int chosenTile = opts.get(rand.nextInt(opts.size()));
+
+            // weighted random choice
+            double totalWeight = 0.0;
+            for (int tile : opts)
+                totalWeight += tileWeights[tile];
+
+            double r = rand.nextDouble() * totalWeight;
+            double cumulative = 0.0;
+            int chosenTile = opts.get(0);
+            for (int tile : opts) {
+                cumulative += tileWeights[tile];
+                if (r <= cumulative) {
+                    chosenTile = tile;
+                    break;
+                }
+            }
+
             stack.push(new State(possibilities, minIndex, chosenTile));
 
             State top = stack.peek();
