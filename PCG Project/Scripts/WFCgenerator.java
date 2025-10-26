@@ -16,6 +16,17 @@ import java.util.Queue;
 
 public class WFCgenerator {
 
+    public static double blankWeight = 0.4;
+
+    public static double stoneWeight = (1-blankWeight) * (0.6) / 12;
+    
+    public static double coalWeight = (1-blankWeight) * (0.4) * (0.5) / 12;
+    public static double ironWeight = (1-blankWeight) * (0.4) * (0.35) / 12;
+    public static double goldWeight = (1-blankWeight) * (0.4) * (0.2) / 12;
+    public static double diamondWeight = (1-blankWeight) * (0.4) * (0.05) / 12;
+    
+    
+
     // helper function for the CSV output, which is used in unity
     public static void write2DArrayToCSV(int[][] array, String filePath) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
@@ -217,12 +228,12 @@ public class WFCgenerator {
 
         // setting the weights for all 61 tiles
         double[] tileWeights = {
-                1.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0,
-                1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
-                0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
-                0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125,
-                0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05,
-                5.0, 15.0 };
+                stoneWeight / 10, stoneWeight, stoneWeight, stoneWeight, stoneWeight, stoneWeight, stoneWeight, stoneWeight, stoneWeight, stoneWeight, stoneWeight, stoneWeight,
+                coalWeight, coalWeight, coalWeight, coalWeight, coalWeight, coalWeight, coalWeight, coalWeight, coalWeight, coalWeight, coalWeight, coalWeight, 
+                ironWeight, ironWeight, ironWeight, ironWeight, ironWeight, ironWeight, ironWeight, ironWeight, ironWeight, ironWeight, ironWeight, ironWeight, 
+                goldWeight, goldWeight, goldWeight, goldWeight, goldWeight, goldWeight, goldWeight, goldWeight, goldWeight, goldWeight, goldWeight, goldWeight, 
+                diamondWeight, diamondWeight, diamondWeight, diamondWeight, diamondWeight, diamondWeight, diamondWeight, diamondWeight, diamondWeight, diamondWeight, diamondWeight, diamondWeight, 
+                stoneWeight * 5, blankWeight};
 
         while (true) {
             int minOptions = Integer.MAX_VALUE;
