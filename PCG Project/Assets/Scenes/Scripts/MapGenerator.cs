@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using static Unity.VisualScripting.Member;
@@ -9,50 +10,29 @@ using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class MapGenerator : MonoBehaviour
 {
-    private int[,] map =
-    {
-        {0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
-        {0, 1, 1, 1, 0, 1, 1, 1, 0, 0},
-        {0, 0, 0, 1, 0, 1, 0, 1, 0, 0},
-        {0, 0, 0, 1, 1, 1, 0, 1, 1, 0},
-        {0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
-        {0, 0, 0, 0, 0, 0, 1, 1, 1, 0},
-        {0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
-        {0, 0, 0, 1, 1, 1, 1, 0, 0, 0},
-        {0, 1, 1, 1, 0, 0, 0, 0, 0, 0},
-        {0, 1, 0, 0, 0, 0, 0, 0, 0, 0}
-    };
-
-    [SerializeField] private GameObject wall;
-    [SerializeField] private GameObject floor;
-
     [SerializeField] private Tilemap tileMap;
-    [SerializeField] private TileBase[] tiles;
+    [SerializeField] private TileData[] tileArray;
     [SerializeField] private TextAsset csvFile;
+    private TileData[,] mapData;
+    [SerializeField] private Vector2Int playerPos;
+    [SerializeField] private Vector2Int goalPos;
 
-    public int MapWidth { get { return map.GetLength(1); } }
-    public int MapHeight { get { return map.GetLength(0); } }
+    public int MapWidth { get; private set; }
+    public int MapHeight { get; private set; }
 
     // Start is called before the first frame update
     void Start()
     {
-        //GenerateMap();
         LoadCSVFile();
-    }
 
-    void GenerateMap()
-    {
-        Vector2 startPos = new Vector2(-MapWidth / 2f + 0.5f, MapHeight / 2f - 0.5f);
-
-        for (int y = 0; y < MapHeight; y++)
+        bool mapValid = Bfs(playerPos, goalPos, mapData);       // Run BFS to check that the map is valid
+        if (!mapValid)
         {
-            for (int x = 0; x < MapWidth; x++)
-            {
-                GameObject tile = map[y, x] == 1 ? floor : wall;
-                float tileSize = 1f;
-                Vector2 pos = new Vector2(startPos.x + x * tileSize, startPos.y - y * tileSize);    // Generate from the center of the camera
-                Instantiate(tile, pos, Quaternion.identity);
-            }
+            Debug.LogWarning("Map invalid, regenerate");
+        }
+        else
+        {
+            Debug.Log("Map valid!");
         }
     }
 
@@ -64,29 +44,121 @@ public class MapGenerator : MonoBehaviour
             return;
         }
 
-        string[] lines = csvFile.text.Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
-        int height = lines.Length;
-        int width = lines[0].Split(',').Length;
-        
-        for (int y = 0; y < height; y++)                                // Each row from top to bottom
+        string[] lines = csvFile.text.Split('\n');
+        MapHeight = lines.Length;
+        MapWidth = lines[0].Split(',').Length;
+
+        mapData = new TileData[MapHeight, MapWidth];
+
+        for (int y = 0; y < MapHeight; y++)                                // Each row from top to bottom
         {
             string line = lines[y].Trim();
             if (string.IsNullOrEmpty(line)) continue;
 
-            string[] values = line.Split(',');
+            string[] cells = line.Split(',');
 
-            for (int x = 0; x < width; x++)                             // Each column from left to right
+            for (int x = 0; x < cells.Length; x++)                             // Each column from left to right
             {
-                if (int.TryParse(values[x], out int tileIndex))         // Convert string to int
+                int tileIndex = int.Parse(cells[x]);
+                if (tileIndex >= 0 && tileIndex < tileArray.Length)
                 {
-                    if (tileIndex >= 0 && tileIndex < tiles.Length)
-                    {
-                        Vector3Int pos = new Vector3Int(x, -y, 0);      // Tile position on the tilemap
-                        tileMap.SetTile(pos, tiles[tileIndex]);
-                    }
+                    TileData tileData = tileArray[tileIndex];
+                    mapData[y, x] = tileData;
+
+                    Tile tile = ScriptableObject.CreateInstance<Tile>();
+                    tile.sprite = tileData.sprite;
+                    tile.colliderType = tileData.colliderType;
+
+                    Vector3Int pos = new Vector3Int(x, -y, 0);
+                    tileMap.SetTile(pos, tile);
                 }
             }
         }
+
+        CenterMap();
+    }
+
+    void CenterMap()
+    {
+        BoundsInt bounds = tileMap.cellBounds;
+        Vector3 mapCenter = tileMap.localBounds.center;
+
+        Camera cam = Camera.main;
+        cam.transform.position = new Vector3(mapCenter.x - 7, mapCenter.y + 5, cam.transform.position.z);
+    }
+
+    bool Bfs(Vector2Int startPos, Vector2Int goalPos, TileData[,] mapData)
+    {
+        Vector2Int[] directions = new Vector2Int[]
+        {
+            new Vector2Int(1, 0),       // right
+            new Vector2Int(-1, 0),      // left
+            new Vector2Int(0, 1),       // up
+            new Vector2Int(0, -1)       // down
+        };
+
+        int rows = mapData.GetLength(0);
+        int cols = mapData.GetLength(1);
+
+        Queue<Vector2Int> queue = new Queue<Vector2Int>();
+        HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
+
+        queue.Enqueue(startPos);
+        visited.Add(startPos);
+
+        while (queue.Count > 0)
+        {
+            var current = queue.Dequeue();
+
+            if (current == goalPos) return true;
+
+            foreach (var dir in directions)
+            {
+                Vector2Int next = current + dir;
+
+                if (next.x < 0 || next.x >= cols || next.y < 0 || next.y >= rows) continue;
+
+                if (visited.Contains(next)) continue;
+
+                if (MoveFromTo(current.x, current.y, next.x, next.y, mapData))    // Check for a valid path through the next tile
+                {
+                    queue.Enqueue(next);
+                    visited.Add(next);
+                    Debug.Log("Added tile to queue!");
+                }
+            }
+        }
+        return false;
+    }
+
+    bool MoveFromTo(int ax, int ay, int bx, int by, TileData[,] mapData)        // Check if can move from A to B
+    {
+        TileData a = mapData[ay, ax];       // Current-tile tiledata
+        TileData b = mapData[by, bx];       // Next-tile tiledata
+
+        if (a == null || b == null) return false;
+
+        if (bx == ax + 1 && by == ay)       // right
+        {
+            return a.canGoRight && b.canGoLeft;
+        }
+
+        if (bx == ax - 1 && by == ay)       // left
+        {
+            return a.canGoLeft && b.canGoRight;
+        }
+
+        if (bx == ax && by == ay + 1)       // up
+        {
+            return a.canGoUp && b.canGoDown;
+        }
+
+        if (bx == ax && by == ay - 1)       // down
+        {
+            return a.canGoDown && b.canGoUp;
+        }
+
+        return false;
     }
 
     //private void OnDrawGizmos()
