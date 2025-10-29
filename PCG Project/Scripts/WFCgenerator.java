@@ -1,4 +1,4 @@
-// version: 0.3.5 - visualizer edition
+// version: 0.3.6 - entry and exit point set
 
 import javax.swing.*;
 import java.awt.*;

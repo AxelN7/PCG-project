@@ -80,6 +80,8 @@ public class OreEvaluator {
             int maxAttempts = 100;
             int trySeed = seed;
             int delay = 10;
+            int entry = rand.nextInt(2, height-3);
+            int exit = rand.nextInt(2, height-3);
             
             while (!success && attempts < maxAttempts) {
                 // reset world array
@@ -87,7 +89,7 @@ public class OreEvaluator {
                     Arrays.fill(worldArray[y], -1);
 
                 //System.out.println("Attempt " + (attempts + 1) + " with seed " + trySeed);
-                success = WFCgenerator.waveFunctionCollapse(width, height, numTiles, RESTRICTIONS, worldArray, trySeed, panel, delay);
+                success = WFCgenerator.waveFunctionCollapse(width, height, numTiles, RESTRICTIONS, worldArray, trySeed, panel, delay, entry, exit);
 
                 attempts++;
                 trySeed++;
