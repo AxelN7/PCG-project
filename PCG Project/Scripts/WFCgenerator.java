@@ -1,4 +1,4 @@
-// version: 0.3.6 - entry and exit point set
+// version: 0.3.7 - entry and exit point set, two variations
 
 import javax.swing.*;
 import java.awt.*;
@@ -196,7 +196,7 @@ public class WFCgenerator {
 
     // wave function collapse with backtracking and output syncing
     public static boolean waveFunctionCollapse(int width, int height, int numTiles, int[][][] RESTRICTIONS,
-            int[][] output, int seed, TileVisualizer visualizer, int delay, int entry, int exit) {
+            int[][] output, int seed, TileVisualizer visualizer, int delay, int entry, int exit, int scenario) {
 
         Random rand = new Random(seed);
         List<Set<Integer>> possibilities = new ArrayList<>();
@@ -211,7 +211,7 @@ public class WFCgenerator {
             for (int y = 0; y < height; y++)
                 output[y][x] = -1;
 
-        setUp(output, entry, exit);
+        setUp(output, entry, exit, scenario);
 
         List<Integer> fixedIndices = new ArrayList<>();
         for (int y = 0; y < height; y++) {
@@ -335,36 +335,8 @@ public class WFCgenerator {
         }
     }
 
-    public static void setUp(int[][] worldArray, int entry, int exit){
-        // Only places an entry and exit, sets the left and right wall as blank
-        // Can produce caves that aren't connected
-        int height = worldArray.length;
-        int width = worldArray[0].length;
 
-        int leftCol = 0;
-        int rightCol = width - 1;
-        
-        // setting the left and right border as blank (skipping the entry/exit point and one above and one below)
-        for(int i = 0; i<height; i++){
-            if(i < entry -1 || i > entry +1){
-                worldArray[i][leftCol] = 61;
-            }
-            if(i < exit -1 || i > exit +1){
-                worldArray[i][rightCol] = 61;
-            }
-        }
-
-        // setting the entry and exit points, as well as the tiles directly above and below them
-        worldArray[entry-1][leftCol] = 6; worldArray[entry][leftCol] = 60; worldArray[entry+1][leftCol] = 1;
-        worldArray[exit-1][rightCol] = 6; worldArray[exit][rightCol] = 60; worldArray[exit+1][rightCol] = 1;
-
-    }
-
-
-    public static void setUp1(int[][] worldArray, int entry, int exit){
-        // Places an entry and exit, sets all walls as a border wall
-        // Can't produce caves that aren't connected
-
+    public static void setUp(int[][] worldArray, int entry, int exit, int scenario){
         int height = worldArray.length;
         int width = worldArray[0].length;
 
@@ -373,31 +345,51 @@ public class WFCgenerator {
         int leftCol = 0;
         int rightCol = width - 1;
 
-        // setting the corners
-        worldArray[topRow][leftCol] = 8;
-        worldArray[bottomRow][leftCol] = 10;
-        worldArray[topRow][rightCol] = 9;
-        worldArray[bottomRow][rightCol] = 11;
+        if(scenario == 0){
+            // Places an entry and exit, sets all walls as a border wall
+            // Can't produce caves that aren't connected
+            // setting the corners
+            worldArray[topRow][leftCol] = 8;
+            worldArray[bottomRow][leftCol] = 10;
+            worldArray[topRow][rightCol] = 9;
+            worldArray[bottomRow][rightCol] = 11;
 
-        // setting the top and bottom row
-        for(int i = 1; i<width-1; i++){
-            worldArray[topRow][i] = 6;
-            worldArray[bottomRow][i] = 1;
-        }
-
-        // setting the left and right border wall (skipping the entry/exit point and one above and one below)
-        for(int i = 1; i<height-1; i++){
-            if(i < entry -1 || i > entry +1){
-                worldArray[i][leftCol] = 3;
+            // setting the top and bottom row
+            for(int i = 1; i<width-1; i++){
+                worldArray[topRow][i] = 6;
+                worldArray[bottomRow][i] = 1;
             }
-            if(i < exit -1 || i > exit +1){
-                worldArray[i][rightCol] = 4;
+
+            // setting the left and right border wall (skipping the entry/exit point and one above and one below)
+            for(int i = 1; i<height-1; i++){
+                if(i < entry -1 || i > entry +1){
+                    worldArray[i][leftCol] = 3;
+                }
+                if(i < exit -1 || i > exit +1){
+                    worldArray[i][rightCol] = 4;
+                }
             }
-        }
 
-        // setting the entry and exit points
-        worldArray[entry][leftCol] = 60; worldArray[exit][rightCol] = 60;
+            // setting the entry and exit points
+            worldArray[entry][leftCol] = 60; worldArray[exit][rightCol] = 60;
+        }else if(scenario == 1){
 
+            // Only places an entry and exit, sets the left and right wall as blank
+            // Can produce caves that aren't connected
+            // setting the left and right border as blank (skipping the entry/exit point and one above and one below)
+            for(int i = 0; i<height; i++){
+                if(i < entry -1 || i > entry +1){
+                    worldArray[i][leftCol] = 61;
+                }
+                if(i < exit -1 || i > exit +1){
+                    worldArray[i][rightCol] = 61;
+                }
+            }
+
+            // setting the entry and exit points, as well as the tiles directly above and below them
+            worldArray[entry-1][leftCol] = 6; worldArray[entry][leftCol] = 60; worldArray[entry+1][leftCol] = 1;
+            worldArray[exit-1][rightCol] = 6; worldArray[exit][rightCol] = 60; worldArray[exit+1][rightCol] = 1;
+            }
     }
 
     public static void main(String[] args) {
@@ -409,6 +401,8 @@ public class WFCgenerator {
         int height = sc.nextInt();
         System.out.println("NUMBER OF TILES: ");
         int numTiles = sc.nextInt();
+        System.out.println("SCENARIO: (0 OR 1)");
+        int scenario = sc.nextInt();
         System.out.println("SEED: ");
         int seed = sc.nextInt();
 
@@ -451,17 +445,17 @@ public class WFCgenerator {
         // sets a random entry and exit point
         int entry = rand.nextInt(2, height-3);
         int exit = rand.nextInt(2, height-3);
-        System.out.printf("%d %d\n", entry, exit);
+        //System.out.printf("%d %d\n", entry, exit);
 
         while (!success && attempts < maxAttempts) {
             // reset world array
             for (int y = 0; y < height; y++)
                 Arrays.fill(worldArray[y], -1);
             
-            setUp(worldArray, entry, exit);
+            setUp(worldArray, entry, exit, scenario);
 
             System.out.println("Attempt " + (attempts + 1) + " with seed " + trySeed);
-            success = waveFunctionCollapse(width, height, numTiles, RESTRICTIONS, worldArray, trySeed, panel, delay, entry, exit);
+            success = waveFunctionCollapse(width, height, numTiles, RESTRICTIONS, worldArray, trySeed, panel, delay, entry, exit, scenario);
 
             attempts++;
             trySeed++;

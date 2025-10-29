@@ -57,6 +57,8 @@ public class OreEvaluator {
         int width = sc.nextInt();
         System.out.println("HEIGHT: ");
         int height = sc.nextInt();
+        System.out.println("SCENARIO: ");
+        int scenario = sc.nextInt();
         int numTiles = 62;
         int seed = rand.nextInt(Integer.MAX_VALUE);
 
@@ -89,7 +91,7 @@ public class OreEvaluator {
                     Arrays.fill(worldArray[y], -1);
 
                 //System.out.println("Attempt " + (attempts + 1) + " with seed " + trySeed);
-                success = WFCgenerator.waveFunctionCollapse(width, height, numTiles, RESTRICTIONS, worldArray, trySeed, panel, delay, entry, exit);
+                success = WFCgenerator.waveFunctionCollapse(width, height, numTiles, RESTRICTIONS, worldArray, trySeed, panel, delay, entry, exit, scenario);
 
                 attempts++;
                 trySeed++;
