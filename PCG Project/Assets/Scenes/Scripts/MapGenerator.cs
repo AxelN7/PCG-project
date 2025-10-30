@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using static Unity.VisualScripting.Member;
@@ -14,25 +15,34 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private TileData[] tileArray;
     [SerializeField] private TextAsset csvFile;
     private TileData[,] mapData;
-    [SerializeField] private Vector2Int playerPos;
+    [SerializeField] private Vector2Int startPos;
     [SerializeField] private Vector2Int goalPos;
 
     public int MapWidth { get; private set; }
     public int MapHeight { get; private set; }
+
+    private Vector2Int[] directions = new Vector2Int[]
+    {
+        new Vector2Int(1, 0),       // right
+        new Vector2Int(-1, 0),      // left
+        new Vector2Int(0, 1),       // up
+        new Vector2Int(0, -1)       // down
+    };
 
     // Start is called before the first frame update
     void Start()
     {
         LoadCSVFile();
 
-        bool mapValid = Bfs(playerPos, goalPos, mapData);       // Run BFS to check that the map is valid
-        if (!mapValid)
+        int numPaths = Bfs(startPos, goalPos, mapData, out int[,] dist);
+        DrawShortestPaths(startPos, goalPos, mapData, dist);
+        if (numPaths == 0)
         {
             Debug.LogWarning("Map invalid, regenerate");
         }
         else
         {
-            Debug.Log("Map valid!");
+            Debug.Log("Map valid! Number of shortest paths: " + numPaths);
         }
     }
 
@@ -87,30 +97,31 @@ public class MapGenerator : MonoBehaviour
         cam.transform.position = new Vector3(mapCenter.x - 7, mapCenter.y + 5, cam.transform.position.z);
     }
 
-    bool Bfs(Vector2Int startPos, Vector2Int goalPos, TileData[,] mapData)
+    int Bfs(Vector2Int startPos, Vector2Int goalPos, TileData[,] mapData, out int[,] dist)
     {
-        Vector2Int[] directions = new Vector2Int[]
-        {
-            new Vector2Int(1, 0),       // right
-            new Vector2Int(-1, 0),      // left
-            new Vector2Int(0, 1),       // up
-            new Vector2Int(0, -1)       // down
-        };
-
         int rows = mapData.GetLength(0);
         int cols = mapData.GetLength(1);
 
-        Queue<Vector2Int> queue = new Queue<Vector2Int>();
-        HashSet<Vector2Int> visited = new HashSet<Vector2Int>();
+        dist = new int[rows, cols];
+        int[,] ways = new int[rows, cols];
 
+        for (int y = 0; y < rows; y++)
+        {
+            for (int x = 0; x < cols; x++)
+            {
+                dist[y, x] = -1;            // Mark as unvisited
+            }
+        }
+
+        Queue<Vector2Int> queue = new Queue<Vector2Int>();
         queue.Enqueue(startPos);
-        visited.Add(startPos);
+
+        dist[startPos.y, startPos.x] = 0;
+        ways[startPos.y, startPos.x] = 1;
 
         while (queue.Count > 0)
         {
             var current = queue.Dequeue();
-
-            if (current == goalPos) return true;
 
             foreach (var dir in directions)
             {
@@ -118,17 +129,24 @@ public class MapGenerator : MonoBehaviour
 
                 if (next.x < 0 || next.x >= cols || next.y < 0 || next.y >= rows) continue;
 
-                if (visited.Contains(next)) continue;
+                if (!MoveFromTo(current.x, current.y, next.x, next.y, mapData)) continue;
 
-                if (MoveFromTo(current.x, current.y, next.x, next.y, mapData))    // Check for a valid path through the next tile
+                if (dist[next.y, next.x] == -1)             // Check if next is not visited and if so set the dist and ways
                 {
+                    dist[next.y, next.x] = dist[current.y, current.x] + 1;
+                    ways[next.y, next.x] = ways[current.y, current.x];
                     queue.Enqueue(next);
-                    visited.Add(next);
                     Debug.Log("Added tile to queue!");
+                }
+                else if (dist[next.y, next.x] == dist[current.y, current.x] + 1)        // Check if there is another shortest path to next
+                {
+                    ways[next.y, next.x] += ways[current.y, current.x];
                 }
             }
         }
-        return false;
+        if (dist[goalPos.y, goalPos.x] == -1) return 0;     // Goal not found
+        Debug.Log("Shortest distance: " + dist[goalPos.y, goalPos.x]);
+        return ways[goalPos.y, goalPos.x];                  // Number of shortest paths to the goal
     }
 
     bool MoveFromTo(int ax, int ay, int bx, int by, TileData[,] mapData)        // Check if can move from A to B
@@ -138,22 +156,25 @@ public class MapGenerator : MonoBehaviour
 
         if (a == null || b == null) return false;
 
-        if (bx == ax + 1 && by == ay)       // right
+        if (!a.canGoLeft && !b.canGoRight || !a.canGoRight && !b.canGoLeft) return false;   // Wall against wall checks
+        if (!a.canGoUp && !b.canGoDown || !a.canGoDown && !b.canGoUp) return false;
+
+        if (bx == ax + 1 && by == ay)       // Right
         {
             return a.canGoRight && b.canGoLeft;
         }
 
-        if (bx == ax - 1 && by == ay)       // left
+        if (bx == ax - 1 && by == ay)       // Left
         {
             return a.canGoLeft && b.canGoRight;
         }
 
-        if (bx == ax && by == ay + 1)       // up
+        if (bx == ax && by == ay + 1)       // Up
         {
             return a.canGoUp && b.canGoDown;
         }
 
-        if (bx == ax && by == ay - 1)       // down
+        if (bx == ax && by == ay - 1)       // Down
         {
             return a.canGoDown && b.canGoUp;
         }
@@ -161,23 +182,35 @@ public class MapGenerator : MonoBehaviour
         return false;
     }
 
-    //private void OnDrawGizmos()
-    //{
-    //    if (map == null) return;
+    private void DrawShortestPaths(Vector2Int start, Vector2Int goal, TileData[,] mapData, int[,] dist)
+    {
+        Vector2Int current = goal;
 
-    //    float tileSize = 1f;
-    //    Vector2 startPos = new Vector2(-MapWidth / 2f + 0.5f, MapHeight / 2f - 0.5f);
+        while (current != start)
+        {
+            Vector2Int prev = PrevStep(current, mapData, dist);
 
-    //    for (int y = 0; y < MapHeight; y++)
-    //    {
-    //        for (int x = 0; x < MapWidth; x++)
-    //        {
-    //            Vector2 pos = new Vector2(startPos.x + x * tileSize, startPos.y - y * tileSize);
-    //            Gizmos.color = map[y, x] == 1 ? Color.green : Color.red;
-    //            Gizmos.DrawWireCube(pos, Vector3.one * 0.9f);
-    //        }
-    //    }
-    //}
+            if (prev == current) break;
+
+            Vector3 worldCurrent = tileMap.GetCellCenterWorld(new Vector3Int(current.x, -current.y, 0));
+            Vector3 worldPrev = tileMap.GetCellCenterWorld(new Vector3Int(prev.x, -prev.y, 0));
+            Debug.DrawLine(worldCurrent, worldPrev, Color.cyan, 40f, false);
+            current = prev;
+        }
+    }
+
+    Vector2Int PrevStep(Vector2Int current, TileData[,] mapData, int[,] dist)
+    {
+        foreach (var dir in directions)
+        {
+            Vector2Int prev = current + dir;
+
+            if (prev.x < 0 || prev.x >= dist.GetLength(1) || prev.y < 0 || prev.y >= dist.GetLength(0)) continue;
+
+            if (dist[prev.y, prev.x] == dist[current.y, current.x] - 1 && MoveFromTo(prev.x, prev.y, current.x, current.y, mapData)) return prev;
+        }
+        return current;
+    }
 
     // Update is called once per frame
     void Update()
