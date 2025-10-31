@@ -267,7 +267,7 @@ MonoBehaviour:
   canGoUp: 1
   canGoDown: 1
   canGoLeft: 0
-  canGoRight: 0
+  canGoRight: 1
 --- !u!1 &171320962
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,7 +416,7 @@ MonoBehaviour:
   colliderType: 1
   canGoUp: 1
   canGoDown: 1
-  canGoLeft: 0
+  canGoLeft: 1
   canGoRight: 0
 --- !u!1 &247330609
 GameObject:
@@ -650,7 +650,7 @@ MonoBehaviour:
   colliderType: 1
   canGoUp: 1
   canGoDown: 1
-  canGoLeft: 0
+  canGoLeft: 1
   canGoRight: 0
 --- !u!1 &313113446
 GameObject:
@@ -1000,7 +1000,7 @@ MonoBehaviour:
   colliderType: 1
   canGoUp: 1
   canGoDown: 1
-  canGoLeft: 0
+  canGoLeft: 1
   canGoRight: 0
 --- !u!1 &519420028
 GameObject:
@@ -1887,7 +1887,7 @@ MonoBehaviour:
   canGoUp: 1
   canGoDown: 1
   canGoLeft: 0
-  canGoRight: 0
+  canGoRight: 1
 --- !u!1 &916220423
 GameObject:
   m_ObjectHideFlags: 0
@@ -2103,7 +2103,7 @@ MonoBehaviour:
   colliderType: 1
   canGoUp: 1
   canGoDown: 1
-  canGoLeft: 0
+  canGoLeft: 1
   canGoRight: 0
 --- !u!4 &988170601
 Transform:
@@ -2642,7 +2642,7 @@ MonoBehaviour:
   canGoUp: 1
   canGoDown: 1
   canGoLeft: 0
-  canGoRight: 0
+  canGoRight: 1
 --- !u!4 &1324656798
 Transform:
   m_ObjectHideFlags: 0
@@ -3752,7 +3752,7 @@ MonoBehaviour:
   canGoUp: 1
   canGoDown: 1
   canGoLeft: 0
-  canGoRight: 0
+  canGoRight: 1
 --- !u!1 &1888554780
 GameObject:
   m_ObjectHideFlags: 0
@@ -3971,7 +3971,7 @@ MonoBehaviour:
   colliderType: 1
   canGoUp: 1
   canGoDown: 1
-  canGoLeft: 0
+  canGoLeft: 1
   canGoRight: 0
 --- !u!1 &2040911266
 GameObject:
@@ -4215,7 +4215,7 @@ MonoBehaviour:
   canGoUp: 1
   canGoDown: 1
   canGoLeft: 0
-  canGoRight: 0
+  canGoRight: 1
 --- !u!1 &2105415661
 GameObject:
   m_ObjectHideFlags: 0
@@ -4290,18 +4290,18 @@ PrefabInstance:
     - target: {fileID: 3391970891313461720, guid: fc310a74b9554a640b6e582b44dc74f9, type: 3}
       propertyPath: csvFile
       value: 
-      objectReference: {fileID: 4900000, guid: 2b1ba2e1613457b4b92d5eb61f6ff60b, type: 3}
+      objectReference: {fileID: 4900000, guid: d5e620f0d571b784889bc8862ba43ae4, type: 3}
     - target: {fileID: 3391970891313461720, guid: fc310a74b9554a640b6e582b44dc74f9, type: 3}
       propertyPath: tileMap
       value: 
       objectReference: {fileID: 1730019918}
     - target: {fileID: 3391970891313461720, guid: fc310a74b9554a640b6e582b44dc74f9, type: 3}
       propertyPath: goalPos.x
-      value: 24
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 3391970891313461720, guid: fc310a74b9554a640b6e582b44dc74f9, type: 3}
       propertyPath: goalPos.y
-      value: 15
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3391970891313461720, guid: fc310a74b9554a640b6e582b44dc74f9, type: 3}
       propertyPath: showPaths
@@ -4313,7 +4313,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3391970891313461720, guid: fc310a74b9554a640b6e582b44dc74f9, type: 3}
       propertyPath: startPos.y
-      value: 11
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3391970891313461720, guid: fc310a74b9554a640b6e582b44dc74f9, type: 3}
       propertyPath: playerPos.x

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -34,6 +35,7 @@ public class MapGenerator : MonoBehaviour
     {
         LoadCSVFile();
 
+        ValidateStartGoal();
         int numPaths = Bfs(startPos, goalPos, mapData, out int[,] dist);
         DrawShortestPaths(startPos, goalPos, mapData, dist);
         if (numPaths == 0)
@@ -42,7 +44,7 @@ public class MapGenerator : MonoBehaviour
         }
         else
         {
-            Debug.Log("Map valid! Number of shortest paths: " + numPaths);
+            Debug.Log("Map valid! Number of shortest paths: " + numPaths / 4);
         }
     }
 
@@ -54,7 +56,8 @@ public class MapGenerator : MonoBehaviour
             return;
         }
 
-        string[] lines = csvFile.text.Split('\n');
+        string[] rawLines = csvFile.text.Split(new[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
+        var lines = rawLines.Where(l => !string.IsNullOrWhiteSpace(l)).ToArray();
         MapHeight = lines.Length;
         MapWidth = lines[0].Split(',').Length;
 
@@ -63,8 +66,6 @@ public class MapGenerator : MonoBehaviour
         for (int y = 0; y < MapHeight; y++)                                // Each row from top to bottom
         {
             string line = lines[y].Trim();
-            if (string.IsNullOrEmpty(line)) continue;
-
             string[] cells = line.Split(',');
 
             for (int x = 0; x < cells.Length; x++)                             // Each column from left to right
@@ -81,6 +82,10 @@ public class MapGenerator : MonoBehaviour
 
                     Vector3Int pos = new Vector3Int(x, -y, 0);
                     tileMap.SetTile(pos, tile);
+                }
+                else
+                {
+                    mapData[y, x] = null;
                 }
             }
         }
@@ -136,7 +141,7 @@ public class MapGenerator : MonoBehaviour
                     dist[next.y, next.x] = dist[current.y, current.x] + 1;
                     ways[next.y, next.x] = ways[current.y, current.x];
                     queue.Enqueue(next);
-                    Debug.Log("Added tile to queue!");
+                    //Debug.Log("Added tile to queue!");
                 }
                 else if (dist[next.y, next.x] == dist[current.y, current.x] + 1)        // Check if there is another shortest path to next
                 {
@@ -210,6 +215,25 @@ public class MapGenerator : MonoBehaviour
             if (dist[prev.y, prev.x] == dist[current.y, current.x] - 1 && MoveFromTo(prev.x, prev.y, current.x, current.y, mapData)) return prev;
         }
         return current;
+    }
+
+    bool ValidateStartGoal()
+    {
+        if (startPos.x < 0 || startPos.x >= MapWidth || startPos.y < 0 || startPos.y >= MapHeight)
+        {
+            Debug.LogError($"Start out of bounds:{startPos} MapSize={MapWidth}x{MapHeight}");
+            return false;
+        }
+
+        if (goalPos.x < 0 || goalPos.x >= MapWidth || goalPos.y < 0 || goalPos.y >= MapHeight)
+        {
+            Debug.LogError($"Goal out of bounds:{goalPos} MapSize={MapWidth}x{MapHeight}");
+            return false;
+        }
+
+        Debug.Log($"Start tile is {(mapData[startPos.y, startPos.x] == null ? "Null" : "Valid")}");
+        Debug.Log($"Goal tile is {(mapData[goalPos.y, goalPos.x] == null ? "Null" : "Valid")}");
+        return true;
     }
 
     // Update is called once per frame
